@@ -1,0 +1,121 @@
+﻿Option Explicit On
+' CREATED BY: Filemon Salas
+' DATE: 01/2015
+' LICENSE: Free
+Class ThisRule
+	
+Public doc As Inventor.Document
+Public AssyDoc As Inventor.AssemblyDocument 
+Public AssyDrawing As Inventor.DrawingDocument 
+
+Public memberList As ArrayList = New ArrayList
+Public memberListText As String = ""
+
+Sub Main()
+		
+	doc = ThisDoc.Document
+	
+	' Are we in a part document?
+	If (doc.DocumentType = DocumentTypeEnum.kPartDocumentObject) Then 
+		' MessageBox.Show("This is a part file.","Information",MessageBoxButtons.OK , MessageBoxIcon.Information)
+		PlacePartsInAssyCreateDrawing()
+	Else ' No, not in a part document, time to leave.
+		MessageBox.Show("This is not a part file.","Information",MessageBoxButtons.OK , MessageBoxIcon.Information)
+		Return
+	End If
+
+End Sub 
+
+ Private Sub PlacePartsInAssyCreateDrawing()
+	
+	Dim partDoc As PartDocument = doc 
+	
+	' Is the part an ipart?		
+	If (Not partDoc.ComponentDefinition.IsiPartFactory) Then ' not an iPart
+		MessageBox.Show("Part file does not appear to have any factory members.", "iLogic", MessageBoxButtons.OK, MessageBoxIcon.Information)
+		Return 
+	End If
+
+	Dim compDef As PartComponentDefinition = partDoc.ComponentDefinition
+	Dim partFileName As String = partDoc.FullFileName 
+	
+	' Step 1: Create a new assembly file
+	CreateNewAssyFile(AssyDoc)
+
+	' Step 2: Place the iparts into the newly created assembly file
+	PlaceParts()
+
+	' Step 3: Create a drawing for the newly created assembly
+	CreateDrawing()
+
+	'zoom all
+	ThisApplication.ActiveView.Fit
+
+End Sub
+
+Private Sub CreateNewAssyFile(ad As AssemblyDocument )
+' Purpose : To create a new assembly file for the 
+' 			iParts
+
+
+End Sub
+
+Private Sub PlaceParts()
+' Purpose : To place the parts into the newly created 
+'			assembly file
+End Sub 
+
+Private Sub CreateDrawing()
+' Purpose : To create a drawing file for the newly created
+'			assembly file 
+
+End Sub
+
+Private Sub Code
+	' set a reference to the assembly component definintion.
+	' This assumes an assembly document is open.
+'	Dim oAsmCompDef As AssemblyComponentDefinition
+'	oAsmCompDef = ThisApplication.ActiveDocument.ComponentDefinition
+
+'	' Set a reference to the transient geometry object.
+'	Dim oTG As TransientGeometry
+'	oTG = ThisApplication.TransientGeometry
+		
+'	' Create a matrix.  
+'	Dim oMatrix As Matrix
+'	oMatrix = oTG.CreateMatrix
+
+'	'Iterate through all of the occurrences
+'	Dim oOccurrence As ComponentOccurrence
+
+'	'place an instance of the component 
+'	'in this case at 0,0,0
+'	oOccurrence = oAsmCompDef.Occurrences.Add(oPath & oFile, oMatrix) 
+'	Component.Color(oOccurrence.Name) = "Red"
+
+'	' Set the translation portion of the matrix so the part will be 
+'	'positioned at the co-ordinates
+'	oMatrix.SetTranslation(oTG.CreateVector(0, 0, 1)) 
+'	'ground it in place
+'	oOccurrence.Grounded = True
+
+'	'place another instance of the component 
+'	'using a co-ordinate value
+'	oOccurrence = oAsmCompDef.Occurrences.Add(oPath & oFile, oMatrix) 
+'	Component.Color(oOccurrence.Name) = "Yellow"
+
+'	' Set the translation portion of the matrix so the part will be 
+'	'positioned at the co-ordinates
+'	oMatrix.SetTranslation(oTG.CreateVector(0, 0, 2)) 
+'	oOccurrence.Grounded = True
+
+'	'place another instance of the component 
+'	'using a co-ordinate value
+'	oOccurrence = oAsmCompDef.Occurrences.Add(oPath & oFile, oMatrix)
+'	Component.Color(oOccurrence.Name) = "Green"
+'	'ground it in place
+'	oOccurrence.Grounded = True
+
+End Sub
+
+End Class
